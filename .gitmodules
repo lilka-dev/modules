@@ -1,0 +1,3 @@
+[submodule "modules/007_lcd_tap/lcdtap"]
+	path = modules/007_lcd_tap/lcdtap
+	url = https://github.com/lilka-dev/lcdtap.git

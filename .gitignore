@@ -1,0 +1,9 @@
+# Manufacturing outputs (Gerbers, schematics, BOM, 3D) are not public
+/00*/
+
+# PlatformIO
+.pio/
+.vscode/
+
+# macOS
+.DS_Store

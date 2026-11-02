@@ -1,4 +1,4 @@
-// LILKA MOD LORA bring-up test (E22-900M22S = SX1262 + TCXO, external RXEN/TXEN switch).
+// LILKA MOD LORA bring-up test (E22-900M2xS = SX1262 or E22-400M2xS = SX1268, TCXO, external RXEN/TXEN switch).
 //
 // Lilka v2 extension header -> module J2:
 //   1 GND | 2 3V3 | 3 RX(44)=SCK | 4 TX(43)=MISO | 5 GPIO48=MOSI | 6 GPIO47=NSS
@@ -21,7 +21,11 @@ static const int PIN_BUSY = 12;
 static int pinSck = 44;
 static int pinMiso = 43;
 
-static const uint32_t FREQ_HZ = 868100000;
+// 868.1 MHz for E22-900M* (SX1262); the lora_433 env builds 433.175 MHz for E22-400M* (SX1268).
+#ifndef LORA_FREQ_HZ
+#    define LORA_FREQ_HZ 868100000
+#endif
+static const uint32_t FREQ_HZ = LORA_FREQ_HZ;
 static const int8_t TX_POWER_DBM = 0; // keep low: safe even with a poor antenna
 
 static SPIClass loraSpi(HSPI);
@@ -158,11 +162,16 @@ static void configureLora() {
     delay(10);
     waitBusy(500);
     cmd({0x8A, 0x01}); // SetPacketType(LoRa)
-    cmd({0x98, 0xD7, 0xDB}); // CalibrateImage(863-870 MHz)
+    if (FREQ_HZ < 500000000)
+        cmd({0x98, 0x6B, 0x6F}); // CalibrateImage(430-440 MHz)
+    else if (FREQ_HZ < 900000000)
+        cmd({0x98, 0xD7, 0xDB}); // CalibrateImage(863-870 MHz)
+    else
+        cmd({0x98, 0xE1, 0xE9}); // CalibrateImage(902-928 MHz)
     waitBusy(500);
     uint32_t frf = (uint32_t)(((uint64_t)FREQ_HZ << 25) / 32000000ULL);
     cmd({0x86, (uint8_t)(frf >> 24), (uint8_t)(frf >> 16), (uint8_t)(frf >> 8), (uint8_t)frf});
-    cmd({0x95, 0x04, 0x07, 0x00, 0x01});                   // SetPaConfig (SX1262)
+    cmd({0x95, 0x04, 0x07, 0x00, 0x01});                   // SetPaConfig (SX1262 / SX1268)
     cmd({0x8E, (uint8_t)TX_POWER_DBM, 0x04});              // SetTxParams(power, 200us ramp)
     cmd({0x8B, 0x07, 0x04, 0x01, 0x00});                   // SF7, BW125, CR4/5, LDRO off
     cmd({0x8F, 0x00, 0x00});                               // SetBufferBaseAddress
@@ -262,7 +271,8 @@ static void selfTest() {
 
     startRx();
     Serial.printf("===== RESULT: %s (%d failure%s) =====\n", fails ? "FAIL" : "PASS", fails, fails == 1 ? "" : "s");
-    Serial.println("Listening on 868.1 MHz SF7/BW125, TX beacon every 10 s. 't'=retest, 'k'=back to Keira.");
+    Serial.printf("Listening on %.3f MHz SF7/BW125, TX beacon every 10 s. 't'=retest, 'k'=back to Keira.\n",
+                  FREQ_HZ / 1e6);
 }
 
 void setup() {

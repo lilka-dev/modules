@@ -9,7 +9,7 @@ the chip do some real work, and prints a `PASS`/`FAIL` report to the USB serial 
 
 <table>
 <tr>
-<td align="center"><a href="modules/003_lora"><img src="modules/003_lora/images/lora_low_power.png" width="230"><br><b>003 LORA</b></a><br>SX1262, 850–930 MHz</td>
+<td align="center"><a href="modules/003_lora"><img src="modules/003_lora/images/lora_low_power.png" width="230"><br><b>003 LORA</b></a><br>SX1262 / SX1268, 868 or 433 MHz</td>
 <td align="center"><a href="modules/003_lora"><img src="modules/003_lora/images/lora_high_power.png" width="230"><br><b>003 LORA (high power)</b></a><br>E22-900M30S</td>
 <td align="center"><a href="modules/004_rf"><img src="modules/004_rf/images/rf_nrf24.png" width="230"><br><b>004 RF</b></a><br>nRF24L01+ / CC1101</td>
 </tr>
@@ -27,7 +27,7 @@ the chip do some real work, and prints a `PASS`/`FAIL` report to the USB serial 
 
 | Module | Chip | Code | Status |
 |---|---|---|---|
-| [003 LORA](modules/003_lora) | Ebyte E22-900M22S / E22-900M30S (SX1262) | [`main.cpp`](modules/003_lora/main.cpp) | REV01 tested on hardware |
+| [003 LORA](modules/003_lora) | Ebyte E22-900M2xS (SX1262, 868/915 MHz) or E22-400M2xS (SX1268, 433 MHz) | [`main.cpp`](modules/003_lora/main.cpp) | REV01 with E22-900M22S tested on hardware |
 | [004 RF](modules/004_rf) | nRF24L01+PA+LNA or CC1101 (nRF24 layout) | [`nrf24`](modules/004_rf/nrf24/main.cpp), [`cc1101`](modules/004_rf/cc1101/main.cpp) | Tested on hardware with both modules |
 | [005 GPS](modules/005_gps) | u-blox NEO-M8N | — | Not tested yet |
 | [006 GYRO MAGNET](modules/006_gyro_magnet) | Bosch BMI260 + TI TMAG5273A1 | [`main.cpp`](modules/006_gyro_magnet/main.cpp) | Tested on hardware; `GYR_INT2` gave no pulses, cause not found yet |
@@ -70,7 +70,7 @@ Requirements: [PlatformIO](https://platformio.org/) and a Lilka v2 connected ove
 ```bash
 git clone --recursive <this repository>   # --recursive also fetches LCD-TAP
 pio run                                   # build every example
-pio run -e lora_sx1262 -t upload          # flash one: lora_sx1262, rf_nrf24, rf_cc1101, gyro_magnet
+pio run -e lora_sx1262 -t upload          # flash one: lora_sx1262, lora_433, rf_nrf24, rf_cc1101, gyro_magnet
 pio device monitor                        # watch the report (115200 baud)
 ```
 

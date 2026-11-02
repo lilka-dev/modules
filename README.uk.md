@@ -9,7 +9,7 @@
 
 <table>
 <tr>
-<td align="center"><a href="modules/003_lora/README.uk.md"><img src="modules/003_lora/images/lora_low_power.png" width="230"><br><b>003 LORA</b></a><br>SX1262, 850–930 МГц</td>
+<td align="center"><a href="modules/003_lora/README.uk.md"><img src="modules/003_lora/images/lora_low_power.png" width="230"><br><b>003 LORA</b></a><br>SX1262 / SX1268, 868 або 433 МГц</td>
 <td align="center"><a href="modules/003_lora/README.uk.md"><img src="modules/003_lora/images/lora_high_power.png" width="230"><br><b>003 LORA (велика потужність)</b></a><br>E22-900M30S</td>
 <td align="center"><a href="modules/004_rf/README.uk.md"><img src="modules/004_rf/images/rf_nrf24.png" width="230"><br><b>004 RF</b></a><br>nRF24L01+ / CC1101</td>
 </tr>
@@ -27,7 +27,7 @@
 
 | Модуль | Мікросхема | Код | Стан |
 |---|---|---|---|
-| [003 LORA](modules/003_lora/README.uk.md) | Ebyte E22-900M22S / E22-900M30S (SX1262) | [`main.cpp`](modules/003_lora/main.cpp) | REV01 перевірено на залізі |
+| [003 LORA](modules/003_lora/README.uk.md) | Ebyte E22-900M2xS (SX1262, 868/915 МГц) або E22-400M2xS (SX1268, 433 МГц) | [`main.cpp`](modules/003_lora/main.cpp) | REV01 з E22-900M22S перевірено на залізі |
 | [004 RF](modules/004_rf/README.uk.md) | nRF24L01+PA+LNA або CC1101 (розпиновування nRF24) | [`nrf24`](modules/004_rf/nrf24/main.cpp), [`cc1101`](modules/004_rf/cc1101/main.cpp) | Перевірено на залізі з обома модулями |
 | [005 GPS](modules/005_gps/README.uk.md) | u-blox NEO-M8N | — | Ще не перевіряли |
 | [006 GYRO MAGNET](modules/006_gyro_magnet/README.uk.md) | Bosch BMI260 + TI TMAG5273A1 | [`main.cpp`](modules/006_gyro_magnet/main.cpp) | Перевірено на залізі; `GYR_INT2` не дав імпульсів, причину ще не знайдено |
@@ -70,7 +70,7 @@ GPIO48…12, 8 — TX, 9 — RX). Не змішуйте ці дві нумера
 ```bash
 git clone --recursive <цей репозиторій>   # --recursive також завантажить LCD-TAP
 pio run                                   # зібрати всі приклади
-pio run -e lora_sx1262 -t upload          # прошити один: lora_sx1262, rf_nrf24, rf_cc1101, gyro_magnet
+pio run -e lora_sx1262 -t upload          # прошити один: lora_sx1262, lora_433, rf_nrf24, rf_cc1101, gyro_magnet
 pio device monitor                        # дивитися звіт (115200 бод)
 ```
 
